@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviços | Carlin Elétrica</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/servicos.css">
+  <script src="./js/servicos.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a href="./index.html" class="brand">
+        <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
+        <span><strong>Carlin Elétrica</strong><small>Gestão de serviços</small></span>
+      </a>
+
+      <p class="menu-label">MENU PRINCIPAL</p>
+      <nav class="menu">
+        <a href="./index.html" class="menu-link">▦ <span>Visão geral</span></a>
+        <a href="./clientes.html" class="menu-link">♙ <span>Clientes</span></a>
+        <a href="./servicos.html" class="menu-link active">⚡ <span>Serviços</span></a>
+        <a href="./orcamentos.html" class="menu-link">▤ <span>Orçamentos</span></a>
+        <a href="./execucoes.html" class="menu-link">✓ <span>Execuções</span></a>
+      </nav>
+
+      <div class="sidebar-footer"><span class="status-dot"></span>Sistema de gestão</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">CATÁLOGO DE SERVIÇOS</p>
+          <h1>Serviços</h1>
+        </div>
+        <!-- <div class="user-profile">
+          <div class="avatar">C</div>
+          <div><strong>Carlin</strong><small>Prestador de serviços</small></div>
+        </div> -->
+      </header>
+
+      <section class="services-intro">
+        <div>
+          <h2>Seus serviços</h2>
+          <p>Organize os serviços oferecidos e seus preços de referência.</p>
+        </div>
+        <button class="primary-button" id="new-service" type="button">＋ Novo serviço</button>
+      </section>
+
+      <section class="service-stats">
+        <article class="service-stat">
+          <span class="stat-icon blue">⚡</span>
+          <div><p>Total de serviços</p><strong id="total-services">0</strong></div>
+        </article>
+        <article class="service-stat">
+          <span class="stat-icon green">✓</span>
+          <div><p>Serviços ativos</p><strong id="active-services">0</strong></div>
+        </article>
+        <article class="service-stat">
+          <span class="stat-icon yellow">▤</span>
+          <div><p>Categorias cadastradas</p><strong id="total-categories">0</strong></div>
+        </article>
+      </section>
+
+      <section class="service-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Catálogo</h2>
+            <p>Os preços poderão ser ajustados individualmente em cada orçamento.</p>
+          </div>
+        </div>
+
+        <div class="service-filters">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="service-search" type="search" placeholder="Buscar serviço...">
+          </label>
+          <select id="category-filter" aria-label="Filtrar por categoria">
+            <option value="">Todas as categorias</option>
+          </select>
+          <select id="status-filter" aria-label="Filtrar por status">
+            <option value="ativos">Ativos</option>
+            <option value="todos">Todos</option>
+            <option value="inativos">Inativos</option>
+          </select>
+        </div>
+
+        <div class="service-table-wrap">
+          <table class="service-table">
+            <thead>
+              <tr>
+                <th>SERVIÇO</th>
+                <th>CATEGORIA</th>
+                <th>PREÇO DE REFERÊNCIA</th>
+                <th>STATUS</th>
+                <th>AÇÕES</th>
+              </tr>
+            </thead>
+            <tbody id="service-list"></tbody>
+          </table>
+        </div>
+
+        <div class="service-empty" id="service-empty">
+          <div class="empty-icon">⚡</div>
+          <h3>Nenhum serviço cadastrado</h3>
+          <p>Cadastre os serviços que você costuma realizar.</p>
+          <button class="primary-button" id="empty-new-service" type="button">＋ Cadastrar serviço</button>
+        </div>
+      </section>
+
+      <section class="category-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Categorias</h2>
+            <p>Crie categorias para manter seu catálogo organizado.</p>
+          </div>
+          <button class="secondary-button" id="new-category" type="button">＋ Categoria</button>
+        </div>
+        <div class="category-list" id="category-list"></div>
+      </section>
+
+      <footer class="footer">Carlin Elétrica <span>•</span> Sistema de gestão</footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="service-modal" hidden>
+    <section class="service-modal" role="dialog" aria-modal="true" aria-labelledby="service-modal-title">
+      <header class="modal-header">
+        <div>
+          <p class="eyebrow">CATÁLOGO</p>
+          <h2 id="service-modal-title">Novo serviço</h2>
+        </div>
+        <button type="button" class="close-button" data-close="service-modal" aria-label="Fechar">×</button>
+      </header>
+
+      <form id="service-form">
+        <label class="field">
+          Nome do serviço *
+          <input name="nome" required maxlength="150" placeholder="Ex.: Instalação de tomada">
+        </label>
+
+        <label class="field">
+          Categoria
+          <select name="categoria" id="service-category">
+            <option value="">Sem categoria</option>
+          </select>
+        </label>
+
+        <label class="field">
+          Descrição
+          <textarea name="descricao" rows="3" maxlength="1000" placeholder="Detalhes do serviço (opcional)"></textarea>
+        </label>
+
+        <label class="field">
+          Preço de referência (R$) *
+          <input name="preco" type="number" min="0" step="0.01" required placeholder="0,00">
+        </label>
+
+        <p class="form-notice">Preço de referência: o valor final poderá ser alterado em cada orçamento.</p>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close="service-modal">Cancelar</button>
+          <button class="primary-button" type="submit">Salvar serviço</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="category-modal" hidden>
+    <section class="service-modal" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+      <header class="modal-header">
+        <div>
+          <p class="eyebrow">ORGANIZAÇÃO</p>
+          <h2 id="category-modal-title">Nova categoria</h2>
+        </div>
+        <button type="button" class="close-button" data-close="category-modal" aria-label="Fechar">×</button>
+      </header>
+
+      <form id="category-form">
+        <label class="field">
+          Nome da categoria *
+          <input name="nome" required maxlength="100" placeholder="Ex.: Instalações elétricas">
+        </label>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close="category-modal">Cancelar</button>
+          <button class="primary-button" type="submit">Salvar categoria</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

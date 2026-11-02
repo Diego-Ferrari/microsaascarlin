@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <meta name="description" content="Sistema de gestão de serviços da Carlin Elétrica">
+  <title>Carlin Elétrica | Gestão</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/app.js" defer></script>
+  <script src="./js/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a href="index.html" class="brand">
+        <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
+        <span>
+          <strong>Carlin Elétrica</strong>
+          <small>Gestão de serviços</small>
+        </span>
+      </a>
+
+      <p class="menu-label">MENU PRINCIPAL</p>
+
+      <nav class="menu">
+        <a href="#" class="menu-link active" data-page="inicio">▦ <span>Visão geral</span></a>
+        <a href="clientes.html" class="menu-link">♙ <span>Clientes</span></a>
+        <a href="servicos.html" class="menu-link">⚡ <span>Serviços</span></a>
+        <a href="#" class="menu-link" data-page="orcamentos">▤ <span>Orçamentos</span></a>
+        <a href="#" class="menu-link" data-page="execucoes">✓ <span>Execuções</span></a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        Sistema de gestão
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PAINEL DE CONTROLE</p>
+          <h1 id="page-title">Visão geral</h1>
+        </div>
+
+        <div class="topbar-actions">
+        <!-- <div class="user-profile">
+          <div class="avatar">C</div>
+          <div>
+            <strong>Carlin</strong>
+            <small>Prestador de serviços</small>
+          </div>
+        </div> -->
+
+  <button id="logout-button" class="logout-button" type="button">
+    <span>↪</span>
+    Sair
+  </button>
+</div>
+      </header>
+
+      <section class="welcome">
+        <div>
+          <p class="welcome-label">SEJA BEM-VINDO</p>
+          <h2>Olá, Carlin!</h2>
+          <p>Gerencie seus clientes, orçamentos e serviços em um só lugar.</p>
+        </div>
+        <!-- <div class="welcome-icon">⚡</div> -->
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <h2>Resumo do negócio</h2>
+            <p>Acompanhe os principais indicadores.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon blue">♙</span>
+              <span class="stat-caption">CADASTRO</span>
+            </div>
+            <p class="stat-title">Clientes ativos</p>
+            <strong class="stat-value" id="dashboard-clients">—</strong>
+            <p class="stat-note">Clientes cadastrados</p>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon yellow">▤</span>
+              <span class="stat-caption">COMERCIAL</span>
+            </div>
+            <p class="stat-title">Orçamentos pendentes</p>
+            <strong class="stat-value" id="dashboard-pending-quotes">—</strong>
+            <p class="stat-note">Aguardando resposta</p>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon green">✓</span>
+              <span class="stat-caption">OPERAÇÃO</span>
+            </div>
+            <p class="stat-title">Serviços executados</p>
+            <strong class="stat-value" id="dashboard-executions">—</strong>
+            <p class="stat-note">Neste mês</p>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon purple">R$</span>
+              <span class="stat-caption">COMERCIAL</span>
+            </div>
+            <p class="stat-title">Valor em negociação</p>
+            <strong class="stat-value" id="dashboard-pending-value">—</strong>
+            <p class="stat-note">Orçamentos pendentes</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon green">R$</span>
+              <span class="stat-caption">FINANCEIRO</span>
+            </div>
+            <p class="stat-title">Total recebido no mês</p>
+            <strong class="stat-value" id="dashboard-received">—</strong>
+            <p class="stat-note">Serviços executados neste mês</p>
+          </article>
+          
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <h2>Acesso rápido</h2>
+            <p>Comece uma tarefa rapidamente.</p>
+          </div>
+        </div>
+
+        <div class="actions-grid">
+          <button class="action-card" data-page="clientes">
+            <span class="action-icon blue">＋</span>
+            <span>
+              <strong>Novo cliente</strong>
+              <small>Acessar clientes</small>
+            </span>
+            <span class="action-arrow">→</span>
+          </button>
+
+          <button class="action-card" data-page="orcamentos">
+            <span class="action-icon yellow">▤</span>
+            <span>
+              <strong>Novo orçamento</strong>
+              <small>Acessar orçamentos</small>
+            </span>
+            <span class="action-arrow">→</span>
+          </button>
+
+          <button class="action-card" data-page="execucoes">
+            <span class="action-icon green">✓</span>
+            <span>
+              <strong>Registrar serviço</strong>
+              <small>Acessar execuções</small>
+            </span>
+            <span class="action-arrow">→</span>
+          </button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        Carlin Elétrica <span>•</span> Sistema de gestão
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

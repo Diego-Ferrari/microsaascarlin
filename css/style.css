@@ -1,0 +1,799 @@
+
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #e8edf7;
+  background: #0b1120;
+  --panel: #111a2c;
+  --border: #233049;
+  --muted: #8e9bb2;
+  --yellow: #ffc928;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  padding: 28px 18px;
+  background: #0e1728;
+  border-right: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 30px;
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: #111827;
+  background: var(--yellow);
+  border-radius: 12px;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.brand strong,
+.brand small,
+.user-profile strong,
+.user-profile small {
+  display: block;
+}
+
+.brand strong {
+  font-size: 14px;
+}
+
+.brand small,
+.user-profile small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.menu-label,
+.eyebrow,
+.welcome-label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.menu-label {
+  margin: 8px 10px 14px;
+}
+
+.menu {
+  display: grid;
+  gap: 7px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 12px;
+  color: #a8b4c9;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.menu-link.active,
+.menu-link:hover {
+  color: #fff;
+  background: #1a2940;
+}
+
+.menu-link.active {
+  border-color: #2b3a52;
+  box-shadow: inset 3px 0 var(--yellow);
+}
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: auto;
+  padding: 17px 10px 0;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: #36d399;
+  border-radius: 50%;
+}
+
+.main-content {
+  min-height: 100vh;
+  max-width: 1700px;
+  margin-left: 250px;
+  padding: 34px 38px 20px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 9px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -0.7px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.user-profile strong {
+  font-size: 12px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: #172033;
+  background: var(--yellow);
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 27px 30px;
+  background: linear-gradient(115deg, #182a43, #142037 65%, #292719);
+  border: 1px solid #2a3c56;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.welcome-label {
+  margin: 0 0 10px;
+  color: var(--yellow);
+}
+
+.welcome h2 {
+  margin: 0 0 9px;
+  font-size: 23px;
+}
+
+.welcome p:last-child {
+  margin: 0;
+  color: #b0bdd0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.welcome-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  color: var(--yellow);
+  background: #ffffff0b;
+  border: 1px solid #ffffff15;
+  border-radius: 16px;
+  font-size: 29px;
+}
+
+.section {
+  margin-top: 32px;
+}
+
+.section-heading {
+  margin-bottom: 17px;
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin: 0 0 7px;
+  font-size: 16px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.stat-card {
+  min-width: 0;
+  padding: 19px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stat-icon,
+.action-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stat-caption {
+  color: #71809a;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.blue {
+  color: #69aaff;
+  background: #193252;
+}
+
+.yellow {
+  color: #ffd45b;
+  background: #3c321c;
+}
+
+.green {
+  color: #54ddb0;
+  background: #153b35;
+}
+
+.purple {
+  color: #c0a0ff;
+  background: #30254b;
+}
+
+.stat-title {
+  margin: 20px 0 8px;
+  color: #b0bdd0;
+  font-size: 12px;
+}
+
+.stat-value {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: clamp(21px, 2vw, 29px);
+  letter-spacing: -0.8px;
+}
+
+.stat-note {
+  margin: 10px 0 0;
+  color: #7888a1;
+  font-size: 10px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  color: inherit;
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.action-card:hover {
+  border-color: #526782;
+  transform: translateY(-2px);
+}
+
+.action-card > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.action-card strong,
+.action-card small {
+  display: block;
+}
+
+.action-card strong {
+  font-size: 12px;
+}
+
+.action-card small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.action-arrow {
+  color: #7f90aa;
+}
+
+.footer {
+  margin-top: 38px;
+  padding: 18px 0 5px;
+  color: #71809a;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+}
+
+.footer span {
+  padding: 0 5px;
+  color: var(--yellow);
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 215px;
+  }
+
+  .main-content {
+    margin-left: 215px;
+    padding: 28px 22px 18px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 15px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    padding: 0 4px 17px;
+  }
+
+  .menu-label,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    padding-bottom: 3px;
+  }
+
+  .menu-link {
+    flex-shrink: 0;
+    gap: 7px;
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 24px 15px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    margin-bottom: 22px;
+  }
+
+  .topbar h1 {
+    font-size: 23px;
+  }
+
+  .user-profile {
+    padding: 5px;
+  }
+
+  .user-profile > div:last-child {
+    display: none;
+  }
+
+  .welcome {
+    padding: 22px 18px;
+  }
+
+  .welcome h2 {
+    font-size: 20px;
+  }
+
+  .welcome p:last-child {
+    font-size: 12px;
+  }
+
+  .welcome-icon {
+    width: 43px;
+    height: 43px;
+    font-size: 22px;
+  }
+
+  .section {
+    margin-top: 27px;
+  }
+
+  .stats-grid {
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-caption {
+    display: none;
+  }
+
+  .stat-title {
+    min-height: 30px;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+
+  .actions-grid {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Botões principais e secundários globais */
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-button {
+  color: #171b23;
+  background: var(--yellow);
+  border: 1px solid var(--yellow);
+}
+
+.primary-button:hover {
+  background: #ffdb60;
+}
+
+.secondary-button {
+  color: #dbe4f2;
+  background: #192338;
+  border: 1px solid var(--border);
+}
+
+.secondary-button:hover {
+  border-color: #7188a8;
+}
+
+/* --- PADRÕES GLOBAIS DE PAINÉIS E BUSCA --- */
+
+.panel-heading {
+  padding: 22px 22px 17px;
+}
+
+.panel-heading h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.panel-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Caixa de pesquisa global */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 13px;
+  background: #0c1424;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.search-box span {
+  color: var(--muted);
+  font-size: 22px;
+}
+
+.search-box input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  color: #e8edf7;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 12px;
+}
+
+.search-box:focus-within {
+  border-color: #7896c2;
+}
+
+/* --- ESTILOS GLOBAIS DE MODAIS --- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 28px 16px;
+  background: #030712c9;
+  backdrop-filter: blur(5px);
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.modal-header .eyebrow {
+  margin: 0 0 8px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.close-button {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  color: #b5c1d4;
+  background: #1a2940;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 23px;
+  flex-shrink: 0;
+}
+
+.close-button:hover {
+  border-color: #7188a8;
+  color: #fff;
+}
+
+/* --- PADRÕES GLOBAIS DE TIPOGRAFIA E SEÇÕES --- */
+
+.eyebrow {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.clients-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.clients-intro h2,
+.panel-heading h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.clients-intro p,
+.panel-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Padronização absoluta dos botões principais em todo o SaaS */
+.primary-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  color: #171b23;
+  background: var(--yellow);
+  border: 1px solid var(--yellow);
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-button:hover {
+  background: #ffdb60;
+}
+
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.logout-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Estilo para o link principal da marca */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Estilo para a imagem do logótipo */
+.brand-logo {
+  width: 50;
+  height: 35px;
+  object-fit: contain;
+  background: transparent; /* Força o navegador a anular qualquer fundo pré-definido */
+  border: none;            /* Remove qualquer contorno ou margem indesejada */
+}
+
+/* Estilo para a estrutura de texto */
+.brand span {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 650px) {
+  /* Centraliza o cabeçalho da página e os títulos principais */
+  .topbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Centraliza a introdução dos clientes (título, descrição e botão) */
+  .clients-intro {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .clients-intro button {
+    width: 100%;
+  }
+
+  /* Centraliza também o cabeçalho dos painéis se necessário */
+  .panel-heading {
+    text-align: center;
+  }
+}

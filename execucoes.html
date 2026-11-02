@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>Execuções de Serviços | Carlin Elétrica</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/execucoes.css">
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <a href="index.html" class="brand">
+        <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
+        <span>
+          <strong>Carlin Elétrica</strong>
+          <small>Gestão de serviços</small>
+        </span>
+      </a>
+
+      <p class="menu-label">MENU PRINCIPAL</p>
+
+      <nav class="menu">
+        <a href="index.html" class="menu-link">
+          <span>▦</span> Visão geral
+        </a>
+        <a href="clientes.html" class="menu-link">
+          <span>♙</span> Clientes
+        </a>
+        <a href="servicos.html" class="menu-link">
+          <span>⚡</span> Serviços
+        </a>
+        <a href="orcamentos.html" class="menu-link">
+          <span>▤</span> Orçamentos
+        </a>
+        <a href="execucoes.html" class="menu-link active">
+          <span>✓</span> Execuções
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        Sistema de gestão
+      </div>
+    </aside>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <span class="page-eyebrow">CONTROLE OPERACIONAL</span>
+          <h1>Execuções de serviços</h1>
+          <p class="page-subtitle">
+            Registre os serviços realizados e acompanhe o histórico dos clientes.
+          </p>
+        </div>
+        <button class="primary-button" id="open-execution-modal">
+          + Registrar execução
+        </button>
+      </header>
+
+      <section class="execution-stats">
+        <article class="stat-card">
+          <span class="stat-label">Serviços registradas</span>
+          <strong id="stat-total">0</strong>
+          <small>Registros no histórico</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Clientes atendidos</span>
+          <strong id="stat-clients">0</strong>
+          <small>Clientes únicos</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Orçamentos em andamento</span>
+          <strong id="stat-progress">0</strong>
+          <small>Com itens ainda pendentes</small>
+        </article>
+      </section>
+
+      <section class="execution-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Histórico de execuções</h2>
+            <p>Consulte os serviços já realizados para cada cliente.</p>
+          </div>
+          <span class="record-count" id="record-count">0 registros</span>
+        </div>
+
+        <div class="execution-filters">
+          <div class="search-field">
+            <span>⌕</span>
+            <input
+              type="search"
+              id="search-executions"
+              placeholder="Buscar cliente, serviço ou orçamento..."
+            >
+          </div>
+
+          <select id="filter-type" aria-label="Filtrar origem">
+            <option value="todos">Todas as origens</option>
+            <option value="orcamento">Vinculado a orçamento</option>
+            <option value="avulso">Serviço avulso</option>
+            <option value="historico_manual">Histórico manual</option>
+          </select>
+
+          <input type="date" id="filter-date" aria-label="Filtrar por data">
+          <button class="secondary-button" id="clear-filters">Limpar filtros</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="execution-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Serviço realizado</th>
+                <th>Origem</th>
+                <th>Quantidade</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="executions-table-body"></tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <div class="empty-icon">✓</div>
+          <h3>Nenhuma execução encontrada</h3>
+          <p>Experimente alterar os filtros ou registre uma nova execução.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de registro -->
+  <div class="modal-overlay" id="execution-modal" hidden>
+    <section
+      class="execution-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-header">
+        <div>
+          <span class="page-eyebrow">NOVO REGISTRO</span>
+          <h2 id="modal-title">Registrar execução</h2>
+          <p>Informe o serviço que foi realizado.</p>
+        </div>
+        <button class="icon-button" id="close-execution-modal" aria-label="Fechar">×</button>
+      </div>
+
+      <form id="execution-form">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="execution-client">Cliente *</label>
+            <select id="execution-client" required>
+              <option value="">Selecione o cliente</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="execution-origin">Tipo de registro *</label>
+            <select id="execution-origin" required>
+              <option value="orcamento">Execução de orçamento</option>
+              <option value="avulso">Serviço avulso</option>
+              <option value="historico_manual">Registrar serviço antigo</option>
+            </select>
+
+          </div>
+
+          <div class="form-group" id="quote-field">
+            <label for="execution-quote">Orçamento *</label>
+            <select id="execution-quote">
+              <option value="">Selecione o orçamento</option>
+            </select>
+          </div>
+          <div class="form-group" id="execution-mode-field">
+            <label for="execution-mode">Modo de execução *</label>
+            <select id="execution-mode">
+              <option value="parcial">Execução parcial</option>
+              <option value="integral">Execução integral (todos os itens)</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width" id="quote-item-field" hidden>
+            <label for="execution-quote-item">Item do orçamento *</label>
+            <select id="execution-quote-item">
+              <option value="">Selecione primeiro um orçamento</option>
+            </select>
+            <small class="field-help" id="remaining-help">
+              Selecione o item que foi executado.
+            </small>
+          </div>
+
+          <div class="form-group full-width" id="standalone-service-field" hidden>
+            <label for="execution-service">Serviço do catálogo</label>
+            <select id="execution-service">
+              <option value="">Selecione um serviço ou descreva abaixo</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width" id="standalone-description-field" hidden>
+            <label for="execution-description">Descrição do serviço *</label>
+            <input
+              type="text"
+              id="execution-description"
+              maxlength="160"
+              placeholder="Ex.: Instalação de três tomadas"
+            >
+          </div>
+
+          <div class="form-group" id="execution-quantity-field">
+            <label for="execution-quantity">Quantidade realizada *</label>
+            <input
+              type="number"
+              id="execution-quantity"
+              min="0.01"
+              step="0.01"
+              placeholder="Ex.: 2"
+              required
+            >
+            <small class="field-help" id="quantity-help">
+              Informe a quantidade executada neste registro.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="execution-date">Data da execução *</label>
+            <input type="date" id="execution-date" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="execution-notes">Observações</label>
+            <textarea
+              id="execution-notes"
+              rows="3"
+              maxlength="1000"
+              placeholder="Detalhes do serviço realizado (opcional)"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-error" id="execution-error" role="alert" hidden></div>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" id="cancel-execution">
+            Cancelar
+          </button>
+          <button type="submit" class="primary-button">
+            Salvar execução
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Modal de detalhes -->
+  <div class="modal-overlay" id="details-modal" hidden>
+    <section
+      class="execution-modal details-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="details-title"
+    >
+      <div class="modal-header">
+        <div>
+          <span class="page-eyebrow">HISTÓRICO</span>
+          <h2 id="details-title">Detalhes da execução</h2>
+        </div>
+        <button class="icon-button" id="close-details-modal" aria-label="Fechar">×</button>
+      </div>
+      <div id="execution-details-content" class="details-content"></div>
+      <div class="modal-actions">
+        <button type="button" class="secondary-button" id="close-details-button">
+          Fechar
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/execucoes.js"></script>
+</body>
+</html>

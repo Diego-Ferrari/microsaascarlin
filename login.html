@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+  <title>Entrar | Carlin Elétrica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <div class="logocarlin">
+        <img src="./imagens/logosemfundo.webp" alt="">
+    </div>
+    <span class="login-eyebrow">GESTÃO DE SERVIÇOS</span>
+    <h1>Bem-vindo de volta</h1>
+    <p class="login-subtitle">Entre na sua conta para acessar o sistema.</p>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          autocomplete="username"
+          placeholder="seu@email.com"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          autocomplete="current-password"
+          placeholder="Digite sua senha"
+          required
+        >
+      </div>
+
+      <p id="login-error" class="login-message" role="alert" hidden></p>
+
+      <button type="submit" id="login-button" class="primary-button">
+        Entrar no sistema
+      </button>
+    </form>
+
+    <p class="login-footer">Carlin Elétrica · Gestão de serviços</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

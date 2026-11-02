@@ -1,0 +1,148 @@
+
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #0b1120;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 34px;
+  border: 1px solid #26344b;
+  border-radius: 18px;
+  background: #111a2c;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 25%);
+  text-align: center; /* Centraliza os textos dentro do card */
+}
+
+.login-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 26px;
+  border-radius: 14px;
+  background: #ffc928;
+  color: #111827;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.login-eyebrow {
+  color: #ffc928;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.login-card h1 {
+  margin: 10px 0;
+  color: #f1f5fb;
+  font-size: 1.65rem;
+}
+
+.login-subtitle {
+  margin: 0 0 28px;
+  color: #8e9bb2;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.login-card form {
+  display: grid;
+  gap: 19px;
+}
+
+.login-card .form-group {
+  display: grid;
+  gap: 8px;
+}
+
+.login-card label {
+  color: #dce5f3;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.login-card input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid #2a3850;
+  border-radius: 9px;
+  outline: none;
+  background: #0b1220;
+  color: #e6edf7;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.login-card input:focus {
+  border-color: #ffc928;
+  box-shadow: 0 0 0 3px rgb(255 201 40 / 10%);
+}
+
+.login-card input::placeholder {
+  color: #68768d;
+}
+
+.login-card .primary-button {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 9px;
+  background: #ffc928;
+  color: #111827;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.login-card .primary-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.login-message {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #783e4b;
+  border-radius: 9px;
+  background: #351b27;
+  color: #ffc1c9;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.login-footer {
+  margin: 26px 0 0;
+  color: #68768d;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 25px 21px;
+  }
+}
+
+/* Container da logo - Centraliza e ajusta espaçamento */
+.logocarlin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Imagem da logo - Limita a largura e altura para não vazar do card */
+.logocarlin img {
+  max-width: 220px; /* Altere o tamanho aqui se quiser maior ou menor */
+  width: 100%;
+  height: auto;
+  display: block;
+}
