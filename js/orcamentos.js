@@ -94,6 +94,10 @@ function getSubtotal(items) {
   );
 }
 
+function getDiscountAmount(subtotal, percentage) {
+  return Math.round((subtotal * percentage / 100 + Number.EPSILON) * 100) / 100;
+}
+
 function getTotal(quote) {
   return Math.max(0, getSubtotal(quote.items) - quote.discount);
 }
@@ -354,7 +358,10 @@ function openModal(quote = null) {
     quote?.validity || addDays(today, 15);
   $("#quote-status").value = quote?.status ?? "pendente";
   $("#quote-notes").value = quote?.notes ?? "";
-  $("#quote-discount").value = quote?.discount ?? 0;
+  const subtotal = quote ? getSubtotal(quote.items) : 0;
+  $("#quote-discount").value = quote?.discount && subtotal
+    ? (quote.discount / subtotal * 100).toFixed(2)
+    : "";
 
   const items = quote?.items ?? [
     { serviceId: null, description: "", quantity: 1, price: 0 }
@@ -496,7 +503,8 @@ function updateTotals() {
     subtotal += total;
   });
 
-  const discount = Math.max(0, Number($("#quote-discount").value) || 0);
+  const discountPercentage = Number($("#quote-discount").value) || 0;
+  const discount = getDiscountAmount(subtotal, discountPercentage);
 
   $("#quote-subtotal").textContent = money(subtotal);
   $("#quote-total").textContent = money(Math.max(0, subtotal - discount));
@@ -524,7 +532,9 @@ async function saveQuote(event) {
   try {
     const user = await getUser();
     const items = readItems();
-    const discount = Number($("#quote-discount").value) || 0;
+    const discountPercentage = $("#quote-discount").value === ""
+      ? 0
+      : Number($("#quote-discount").value);
     const subtotal = getSubtotal(items);
 
     if (!$("#quote-client").value) {
@@ -545,12 +555,18 @@ async function saveQuote(event) {
       return;
     }
 
-    if (discount < 0 || discount > subtotal) {
+    if (
+      !Number.isFinite(discountPercentage) ||
+      discountPercentage < 0 ||
+      discountPercentage > 100
+    ) {
       showFormError(
-        "O desconto deve ser maior ou igual a zero e não pode superar o subtotal."
+        "O desconto deve estar entre 0% e 100%."
       );
       return;
     }
+
+    const discount = getDiscountAmount(subtotal, discountPercentage);
 
     const validity = $("#quote-validity").value;
 
@@ -747,6 +763,7 @@ async function generateQuotePDF(quote) {
   const contentWidth = pageWidth - margin * 2;
 
   const subtotal = getSubtotal(quote.items);
+  const discount = Number(quote.discount) || 0;
   const total = getTotal(quote);
 
   // Cabeçalho
@@ -872,13 +889,25 @@ async function generateQuotePDF(quote) {
     align: "right"
   });
 
-  summaryY += 7;
+  if (discount > 0) {
+    const discountPercentage = subtotal
+      ? discount / subtotal * 100
+      : 0;
+    const formattedPercentage = discountPercentage.toLocaleString("pt-BR", {
+      maximumFractionDigits: 2
+    });
 
-  doc.text(`Desconto: ${money(quote.discount)}`, summaryX, summaryY, {
-    align: "right"
-  });
-
-  summaryY += 10;
+    summaryY += 7;
+    doc.text(
+      `Desconto (${formattedPercentage}%): -${money(discount)}`,
+      summaryX,
+      summaryY,
+      { align: "right" }
+    );
+    summaryY += 10;
+  } else {
+    summaryY += 10;
+  }
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
