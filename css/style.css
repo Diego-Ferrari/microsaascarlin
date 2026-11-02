@@ -892,3 +892,45 @@ button {
   margin: 0;
   flex-shrink: 0;
 }
+
+@media (max-width: 650px) {
+  .sidebar .brand strong {
+    font-size: 15px;
+  }
+
+  .sidebar .brand small {
+    font-size: 13px;
+  }
+
+  .menu-link {
+    font-size: 14px;
+  }
+
+  .main-content .eyebrow {
+    font-size: 11px;
+  }
+
+  .main-content .topbar h1 {
+    font-size: 25px;
+  }
+
+  .main-content .welcome p:last-child,
+  .main-content .section-heading p,
+  .main-content .panel-heading p {
+    font-size: 14px;
+  }
+
+  .main-content .section-heading h2 {
+    font-size: 18px;
+  }
+
+  .main-content .stat-label {
+    font-size: 14px;
+  }
+
+  .main-content .primary-button,
+  .main-content .secondary-button,
+  .sidebar-header .logout-button {
+    font-size: 14px;
+  }
+}

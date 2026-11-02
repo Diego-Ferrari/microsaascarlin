@@ -291,6 +291,41 @@
     min-height: 42px;
   }
 
+  .services-intro p,
+  .panel-heading p,
+  .service-stat p,
+  .service-empty p {
+    font-size: 14px;
+  }
+
+  .service-filters select,
+  .search-box input,
+  .service-modal .field input,
+  .service-modal .field select,
+  .service-modal .field textarea {
+    font-size: 16px;
+  }
+
+  .service-table th {
+    font-size: 11px;
+  }
+
+  .service-table td,
+  .service-modal .field {
+    font-size: 14px;
+  }
+
+  .service-description,
+  .service-status,
+  .service-modal .form-notice,
+  .category-chip {
+    font-size: 13px;
+  }
+
+  .service-actions button {
+    font-size: 14px;
+  }
+
   .category-panel .panel-heading {
     align-items: flex-start;
   }

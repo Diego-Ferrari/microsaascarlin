@@ -146,3 +146,22 @@
   height: auto;
   display: block;
 }
+
+@media (max-width: 480px) {
+  .login-eyebrow {
+    font-size: 12px;
+  }
+
+  .login-card label {
+    font-size: 15px;
+  }
+
+  .login-card input {
+    font-size: 16px;
+  }
+
+  .login-message,
+  .login-footer {
+    font-size: 14px;
+  }
+}

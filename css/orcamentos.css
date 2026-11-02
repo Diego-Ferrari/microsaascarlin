@@ -533,3 +533,56 @@
   color: #cbd5e5;
 }
 
+@media (max-width: 700px) {
+  .page-description,
+  .section-heading p,
+  .items-heading p {
+    font-size: 14px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+  }
+
+  .stat-caption {
+    font-size: 13px;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .small-action {
+    font-size: 14px;
+  }
+
+  .search-box input,
+  .toolbar select,
+  .form-field input,
+  .form-field select,
+  .form-field textarea,
+  .discount-field input,
+  .quote-item-row input,
+  .item-source {
+    font-size: 16px;
+  }
+
+  .data-table th,
+  .items-table-header {
+    font-size: 13px;
+  }
+
+  .data-table td,
+  .form-field,
+  .discount-field span,
+  .item-line-total {
+    font-size: 14px;
+  }
+
+  .status-badge {
+    font-size: 13px;
+  }
+}
+

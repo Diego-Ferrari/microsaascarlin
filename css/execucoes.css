@@ -568,3 +568,57 @@
   }
 }
 
+@media (max-width: 760px) {
+  .page-eyebrow {
+    font-size: 12px;
+  }
+
+  .page-subtitle,
+  .panel-heading p,
+  .empty-state p {
+    font-size: 14px;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .row-action {
+    font-size: 15px;
+  }
+
+  .stat-label,
+  .record-count,
+  .table-secondary,
+  .origin-badge,
+  .field-help {
+    font-size: 13px;
+  }
+
+  .stat-card small,
+  .execution-table th {
+    font-size: 12px;
+  }
+
+  .search-field input,
+  .execution-filters select,
+  .execution-filters input[type="date"],
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+  }
+
+  .execution-table td,
+  .form-group label,
+  .detail-label {
+    font-size: 15px;
+  }
+
+  .form-error {
+    font-size: 14px;
+  }
+
+  .detail-value {
+    font-size: 15px;
+  }
+}
+
