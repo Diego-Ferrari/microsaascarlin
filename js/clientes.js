@@ -653,6 +653,75 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+async function excluirCliente(cliente) {
+  try {
+    const { data: usuarioData, error: usuarioError } =
+      await supabaseClient.auth.getUser();
+
+    if (usuarioError) throw usuarioError;
+
+    const usuario = usuarioData.user;
+
+    if (!usuario) {
+      window.location.replace("login.html");
+      return;
+    }
+
+    const { data: execucoes, error: erroExecucoes } =
+      await supabaseClient
+        .from("execucoes_servico")
+        .select("id")
+        .eq("cliente_id", cliente.id)
+        .eq("usuario_id", usuario.id)
+        .limit(1);
+
+    if (erroExecucoes) throw erroExecucoes;
+
+    if (execucoes?.length) {
+      mostrarErro(
+        `Não é possível excluir "${cliente.nome}": existem execuções no histórico.`
+      );
+      return;
+    }
+
+    const { data: orcamentos, error: erroOrcamentos } =
+      await supabaseClient
+        .from("orcamentos")
+        .select("id")
+        .eq("cliente_id", cliente.id)
+        .eq("usuario_id", usuario.id)
+        .limit(1);
+
+    if (erroOrcamentos) throw erroOrcamentos;
+
+    if (orcamentos?.length) {
+      mostrarErro(
+        `Não é possível excluir "${cliente.nome}": existem orçamentos vinculados.`
+      );
+      return;
+    }
+
+    if (!confirm(`Deseja excluir permanentemente o cliente "${cliente.nome}"?`)) {
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("clientes")
+      .delete()
+      .eq("id", cliente.id)
+      .eq("usuario_id", usuario.id);
+
+    if (error) throw error;
+
+    await carregarClientes();
+  } catch (error) {
+    console.error("Erro ao excluir cliente:", error);
+    mostrarErro(
+      "Não foi possível excluir o cliente. Ele pode possuir execuções ou orçamentos vinculados."
+    );
+  }
+}
+
 // Arquiva ou reativa o cliente no banco.
 async function alternarArquivamento(cliente) {
   const arquivado = clienteEstaArquivado(cliente);
@@ -772,6 +841,12 @@ function renderClients() {
       alternarArquivamento(cliente)
     );
 
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.type = "button";
+    botaoExcluir.className = "row-action danger";
+    botaoExcluir.textContent = "Excluir";
+    botaoExcluir.addEventListener("click", () => excluirCliente(cliente));
+
     const botaoHistorico = document.createElement("button");
 botaoHistorico.type = "button";
 botaoHistorico.className = "row-action";
@@ -784,7 +859,8 @@ botaoHistorico.addEventListener("click", () => {
 acoes.append(
   botaoEditar,
   botaoHistorico,
-  botaoArquivar
+  botaoArquivar,
+  botaoExcluir
 );
     acoesCelula.append(acoes);
 
