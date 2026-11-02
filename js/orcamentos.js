@@ -293,9 +293,9 @@ function renderQuotes() {
     pdf.type = "button";
     pdf.className = "small-action";
     pdf.textContent = "PDF";
-    pdf.addEventListener("click", () => {
+    pdf.addEventListener("click", async () => {
       try {
-        downloadQuotePDF(quote);
+        await downloadQuotePDF(quote);
         showToast("PDF gerado com sucesso!");
       } catch (error) {
         console.error("Erro ao gerar PDF:", error);
@@ -698,7 +698,41 @@ async function saveQuote(event) {
 // GERAR PDF DO ORÇAMENTO
 // ================================
 
-function generateQuotePDF(quote) {
+let pdfLogoPromise;
+
+function getPDFLogoData() {
+  if (!pdfLogoPromise) {
+    pdfLogoPromise = new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+          reject(new Error("Não foi possível preparar o logotipo."));
+          return;
+        }
+
+        context.drawImage(image, 0, 0);
+        resolve({
+          data: canvas.toDataURL("image/png"),
+          width: image.naturalWidth,
+          height: image.naturalHeight
+        });
+      };
+      image.onerror = () => reject(new Error("Não foi possível carregar o logotipo."));
+      image.src = "./imagens/logosemfundo.webp";
+    });
+  }
+
+  return pdfLogoPromise;
+}
+
+async function generateQuotePDF(quote) {
+  const logo = await getPDFLogoData();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
@@ -719,15 +753,16 @@ function generateQuotePDF(quote) {
   doc.setFillColor(11, 17, 32);
   doc.rect(0, 0, pageWidth, 38, "F");
 
-  doc.setTextColor(255, 201, 40);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.text("CARLIN ELETRICA", margin, 17);
-
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text("Proposta comercial de servicos", margin, 25);
+  const logoWidth = 55;
+  const logoHeight = logoWidth * logo.height / logo.width;
+  doc.addImage(
+    logo.data,
+    "PNG",
+    margin,
+    (38 - logoHeight) / 2,
+    logoWidth,
+    logoHeight
+  );
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
@@ -916,8 +951,8 @@ function generateQuotePDF(quote) {
   return doc;
 }
 
-function getQuotePDFFile(quote) {
-  const doc = generateQuotePDF(quote);
+async function getQuotePDFFile(quote) {
+  const doc = await generateQuotePDF(quote);
   const blob = doc.output("blob");
 
   const filename = `${quote.number.toLowerCase()}.pdf`;
@@ -927,8 +962,8 @@ function getQuotePDFFile(quote) {
   });
 }
 
-function downloadQuotePDF(quote) {
-  const doc = generateQuotePDF(quote);
+async function downloadQuotePDF(quote) {
+  const doc = await generateQuotePDF(quote);
   doc.save(`${quote.number.toLowerCase()}.pdf`);
 }
 
@@ -972,7 +1007,7 @@ async function shareWhatsApp(quoteId) {
   const whatsappWindow = window.open("about:blank", "_blank");
 
   try {
-    const file = getQuotePDFFile(quote);
+    const file = await getQuotePDFFile(quote);
 
     // Compartilhamento nativo do PDF, principalmente em celulares.
     if (
@@ -1004,7 +1039,7 @@ async function shareWhatsApp(quoteId) {
     }
 
     // Fallback: baixa o PDF e abre a conversa do WhatsApp.
-    const doc = generateQuotePDF(quote);
+    const doc = await generateQuotePDF(quote);
     doc.save(`${quote.number.toLowerCase()}.pdf`);
 
     if (whatsappWindow) {
