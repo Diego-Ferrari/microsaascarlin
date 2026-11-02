@@ -18,29 +18,36 @@
 <body>
   <div class="layout">
     <aside class="sidebar">
-      <a href="index.html" class="brand">
-        <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
-        <span>
-          <strong>Carlin Elétrica</strong>
-          <small>Gestão de serviços</small>
-        </span>
-      </a>
+  <!-- Container flex para alinhar logo à esquerda e botão de sair à direita -->
+  <div class="sidebar-header">
+    <a href="index.html" class="brand">
+      <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
+      <span>
+        <strong>Carlin Elétrica</strong>
+        <small>Gestão de serviços</small>
+      </span>
+    </a>
+    <button id="logout-button" class="logout-button" type="button">
+      <span>↪</span>
+      Sair
+    </button>
+  </div>
 
-      <p class="menu-label">MENU PRINCIPAL</p>
+  <p class="menu-label">MENU PRINCIPAL</p>
 
-      <nav class="menu">
-        <a href="#" class="menu-link active" data-page="inicio">▦ <span>Visão geral</span></a>
-        <a href="clientes.html" class="menu-link">♙ <span>Clientes</span></a>
-        <a href="servicos.html" class="menu-link">⚡ <span>Serviços</span></a>
-        <a href="#" class="menu-link" data-page="orcamentos">▤ <span>Orçamentos</span></a>
-        <a href="#" class="menu-link" data-page="execucoes">✓ <span>Execuções</span></a>
-      </nav>
+  <nav class="menu">
+    <a href="#" class="menu-link active" data-page="inicio">▦ <span>Visão geral</span></a>
+    <a href="clientes.html" class="menu-link">♙ <span>Clientes</span></a>
+    <a href="servicos.html" class="menu-link">⚡ <span>Serviços</span></a>
+    <a href="#" class="menu-link" data-page="orcamentos">▤ <span>Orçamentos</span></a>
+    <a href="#" class="menu-link" data-page="execucoes">✓ <span>Execuções</span></a>
+  </nav>
 
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        Sistema de gestão
-      </div>
-    </aside>
+  <div class="sidebar-footer">
+    <span class="status-dot"></span>
+    Sistema de gestão
+  </div>
+</aside>
 
     <main class="main-content">
       <header class="topbar">
@@ -58,10 +65,7 @@
           </div>
         </div> -->
 
-  <button id="logout-button" class="logout-button" type="button">
-    <span>↪</span>
-    Sair
-  </button>
+  
 </div>
       </header>
 

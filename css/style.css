@@ -43,11 +43,25 @@ button {
   border-right: 1px solid var(--border);
 }
 
+.premenu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 0 8px 30px;
+}
+
+.brand-text {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
 }
 
 .brand-icon {
@@ -151,7 +165,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 28px;
+  margin-bottom: 5px;
 }
 
 .eyebrow {
@@ -263,6 +277,7 @@ button {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 13px;
+  
 }
 
 .stat-top {
@@ -386,6 +401,7 @@ button {
   color: #71809a;
   border-top: 1px solid var(--border);
   font-size: 10px;
+  text-align: center;
 }
 
 .footer span {
@@ -441,7 +457,7 @@ button {
     flex-shrink: 0;
     gap: 7px;
     padding: 10px;
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .main-content {
@@ -451,7 +467,7 @@ button {
 
   .topbar {
     align-items: flex-start;
-    margin-bottom: 22px;
+    margin-bottom: 5px;
   }
 
   .topbar h1 {
@@ -494,6 +510,11 @@ button {
 
   .stat-card {
     padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
   }
 
   .stat-caption {
@@ -515,7 +536,7 @@ button {
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }
@@ -796,4 +817,78 @@ button {
   .panel-heading {
     text-align: center;
   }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center; /* Mantém o alinhamento centralizado verticalmente com a logo */
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px; /* Reduz um pouco o padding vertical para compactar a altura */
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.8125rem; /* Letra ligeiramente menor para encaixar melhor ao lado da logo */
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Centraliza o bloco da marca na sidebar e alinha os itens no centro */
+
+ /* Centraliza o bloco da marca na sidebar e alinha os itens no centro */
+.sidebar .brand {
+  display: flex;
+  flex-direction: row; /* Alinha a imagem e o texto lado a lado */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente na sidebar */
+  gap: 8px; /* Reduz a distância entre a imagem e o texto */
+  margin-bottom: 24px;
+}
+
+
+/* Controla o tamanho e espaçamento interno da logo */
+.sidebar .brand-logo {
+  width: 40px; /* Ajuste o tamanho conforme sua preferência */
+  height: auto;
+}
+
+/* Centraliza o texto interno da marca */
+.sidebar .brand span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Alinhamento da logo com o botão de logout */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sidebar-header .brand {
+  padding: 0 8px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-header .logout-button {
+  align-self: center;
+  margin: 0;
+  flex-shrink: 0;
 }
