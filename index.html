@@ -27,7 +27,8 @@
         <small>Gestão de serviços</small>
       </span>
     </a>
-    <button id="logout-button" class="logout-button" type="button">
+    <button id="logout-button" class="logout-button" type="button"
+      aria-label="Sair da conta" title="Sair da conta">
       <span>↪</span>
       Sair
     </button>
@@ -36,11 +37,26 @@
   <p class="menu-label">MENU PRINCIPAL</p>
 
   <nav class="menu">
-    <a href="#" class="menu-link active" data-page="inicio">▦ <span>Visão geral</span></a>
-    <a href="clientes.html" class="menu-link">♙ <span>Clientes</span></a>
-    <a href="servicos.html" class="menu-link">⚡ <span>Serviços</span></a>
-    <a href="#" class="menu-link" data-page="orcamentos">▤ <span>Orçamentos</span></a>
-    <a href="#" class="menu-link" data-page="execucoes">✓ <span>Execuções</span></a>
+    <a href="#" class="menu-link active" data-page="inicio">
+      <span class="menu-icon" aria-hidden="true">▦</span>
+      <span>Visão geral</span>
+    </a>
+    <a href="clientes.html" class="menu-link">
+      <span class="menu-icon" aria-hidden="true">♙</span>
+      <span>Clientes</span>
+    </a>
+    <a href="servicos.html" class="menu-link">
+      <span class="menu-icon" aria-hidden="true">⚡</span>
+      <span>Serviços</span>
+    </a>
+    <a href="#" class="menu-link" data-page="orcamentos">
+      <span class="menu-icon" aria-hidden="true">▤</span>
+      <span>Orçamentos</span>
+    </a>
+    <a href="#" class="menu-link" data-page="execucoes">
+      <span class="menu-icon" aria-hidden="true">✓</span>
+      <span>Execuções</span>
+    </a>
   </nav>
 
   <div class="sidebar-footer">

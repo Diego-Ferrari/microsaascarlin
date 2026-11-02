@@ -894,6 +894,74 @@ button {
 }
 
 @media (max-width: 650px) {
+  .sidebar {
+    position: fixed;
+    inset: auto 0 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
+    width: 100%;
+    height: calc(76px + env(safe-area-inset-bottom, 0px));
+    gap: 2px;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    border: 0;
+    border-top: 1px solid var(--border);
+    background: #0e1728;
+  }
+
+  .sidebar .brand,
+  .sidebar .menu-label,
+  .sidebar .sidebar-footer {
+    display: none;
+  }
+
+  .sidebar-header {
+    display: contents;
+  }
+
+  .sidebar .menu {
+    display: contents;
+  }
+
+  .sidebar .menu-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 60px;
+    gap: 3px;
+    padding: 4px 2px;
+    font-size: 11px;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .sidebar .menu-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .sidebar .menu-link.active {
+    box-shadow: inset 0 3px var(--yellow);
+  }
+
+  .main-content {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sidebar-header .logout-button {
+    position: fixed;
+    top: 10px;
+    right: 12px;
+    z-index: 20;
+    min-height: 40px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 650px) {
   .sidebar .brand strong {
     font-size: 15px;
   }
