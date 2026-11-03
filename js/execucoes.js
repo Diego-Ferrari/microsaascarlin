@@ -405,7 +405,12 @@ function renderExecutions() {
   const tbody = $("#executions-table-body");
   tbody.innerHTML = "";
 
+  const displayedDeleteButtons = new Set();
+
   rows.forEach(({ execution, item, quote }) => {
+    const showDeleteButton = !displayedDeleteButtons.has(execution.id);
+
+    displayedDeleteButtons.add(execution.id);
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -447,9 +452,23 @@ function renderExecutions() {
       </td>
 
       <td>
-        <button class="row-action" data-details="${escapeHTML(execution.id)}">
-          Detalhes
-        </button>
+        <div class="execution-actions">
+          <button class="row-action" data-details="${escapeHTML(execution.id)}">
+            Detalhes
+          </button>
+
+          ${
+            showDeleteButton
+              ? `<button
+                  class="row-action delete-action"
+                  data-delete="${escapeHTML(execution.id)}"
+                  type="button"
+                >
+                  Excluir
+                </button>`
+              : ""
+          }
+        </div>
       </td>
     `;
 
@@ -808,11 +827,59 @@ function renderExecutions() {
     renderExecutions();
   });
 
-  $("#executions-table-body").addEventListener("click", (event) => {
-    const button = event.target.closest("[data-details]");
-    if (button) openDetails(button.dataset.details);
-  });
+  $("#executions-table-body").addEventListener("click", async (event) => {
+  const deleteButton = event.target.closest("[data-delete]");
 
+  if (deleteButton) {
+    const executionId = deleteButton.dataset.delete;
+    const execution = executionById(executionId);
+
+    if (!execution) return;
+
+    const confirmed = confirm(
+      `Deseja realmente excluir esta execução de ${clientName(execution.cliente_id)}?\n\n` +
+      `Todos os itens deste registro também serão excluídos.\n\n` +
+      `Se estiver vinculada a um orçamento, as quantidades voltarão a ficar pendentes.\n\n` +
+      `Esta ação não poderá ser desfeita.`
+    );
+
+    if (!confirmed) return;
+
+    deleteButton.disabled = true;
+    deleteButton.textContent = "Excluindo...";
+
+    try {
+      const { error } = await supabaseClient.rpc(
+        "excluir_execucao",
+        {
+          p_execucao_id: executionId
+        }
+      );
+
+      if (error) throw error;
+
+      await refreshData();
+
+    } catch (error) {
+      console.error("Erro ao excluir execução:", error);
+
+      alert(
+        error.message || "Não foi possível excluir a execução."
+      );
+
+      deleteButton.disabled = false;
+      deleteButton.textContent = "Excluir";
+    }
+
+    return;
+  }
+
+  const detailsButton = event.target.closest("[data-details]");
+
+  if (detailsButton) {
+    openDetails(detailsButton.dataset.details);
+  }
+});
   form.addEventListener("submit", saveExecution);
 
   // Inicialização.
