@@ -292,37 +292,54 @@ const renderizarContas = () => {
     const nomeCliente = getClientName(conta.cliente_id);
 
     return `
-      <tr>
-        <td>
-          <strong>${escapeHTML(nomeCliente)}</strong>
-        </td>
+  <tr>
+    <td>
+      <strong>#${escapeHTML(conta.numero_orcamento)}</strong>
+    </td>
 
-        <td>
-          #${escapeHTML(conta.numero_orcamento)}
-        </td>
+    <td>
+      ${escapeHTML(nomeCliente)}
+    </td>
 
-        <td>${money(conta.valor_total)}</td>
+    <td>${formatDate(conta.criado_em)}</td>
 
-        <td>${money(conta.total_recebido)}</td>
+    <td>${money(conta.valor_total)}</td>
 
-        <td>${money(conta.saldo)}</td>
+    <td>${money(conta.total_recebido)}</td>
 
-        <td>
-          <span class="status-badge ${getStatusClass(conta.situacao)}">
-            ${escapeHTML(getStatusLabel(conta.situacao))}
-          </span>
-        </td>
+    <td>${money(conta.saldo)}</td>
 
-        <td>
-          <button
-            class="small-action"
-            type="button"
-            data-account-id="${escapeHTML(conta.conta_id)}"
-          >
-            Detalhes
-          </button>
-        </td>
-      </tr>
+    <td>
+      <span class="status-badge ${getStatusClass(conta.situacao)}">
+        ${escapeHTML(getStatusLabel(conta.situacao))}
+      </span>
+    </td>
+
+    <td>
+      <div class="action-buttons">
+        <button
+          class="small-action"
+          type="button"
+          data-account-id="${escapeHTML(conta.conta_id)}"
+          title="Ver detalhes"
+        >
+          Detalhes
+        </button>
+
+        <button
+          class="small-action delete-action"
+          type="button"
+          data-delete-account="${escapeHTML(conta.conta_id)}"
+          title="Excluir conta"
+          aria-label="Excluir conta"
+        >
+          Excluir
+        </button>
+      </div>
+    </td>
+  </tr>
+`; `
+      
     `;
   }).join("");
 };
@@ -746,6 +763,73 @@ const registrarRecebimento = async (event) => {
   }
 };
 
+// =====================================================
+// EXCLUIR CONTA FINANCEIRA
+// =====================================================
+
+const excluirConta = async (contaId, button) => {
+  const conta = contas.find(
+    (item) => item.conta_id === contaId
+  );
+
+  if (!conta) return;
+
+  const totalRecebido = Number(conta.total_recebido || 0);
+
+  const mensagem = `
+Deseja realmente excluir esta conta?
+
+Orçamento: #${conta.numero_orcamento}
+Valor total: ${money(conta.valor_total)}
+Total recebido: ${money(totalRecebido)}
+
+ATENÇÃO: ${totalRecebido > 0
+  ? "Todos os recebimentos registrados serão apagados do histórico financeiro."
+  : "As parcelas vinculadas também serão apagadas."}
+
+O orçamento original NÃO será excluído.
+
+Esta ação não poderá ser desfeita.
+`;
+
+  if (!confirm(mensagem)) return;
+
+  button.disabled = true;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("contas_receber")
+      .delete()
+      .eq("id", contaId)
+      .select("id");
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      throw new Error("A conta não foi encontrada ou não pôde ser excluída.");
+    }
+
+    if (contaSelecionada?.conta_id === contaId) {
+      fecharModalFinanceiro();
+      contaSelecionada = null;
+      parcelasAtuais = [];
+      recebimentosAtuais = [];
+    }
+
+    await carregarFinanceiro();
+
+    showToast("Conta financeira excluída com sucesso!");
+
+  } catch (error) {
+    console.error("Erro ao excluir conta:", error);
+    showToast(
+      error.message || "Não foi possível excluir a conta.",
+      "error"
+    );
+    button.disabled = false;
+  }
+};
+
 
 // =====================================================
 // EVENTOS
@@ -756,11 +840,21 @@ financialSearch?.addEventListener("input", renderizarContas);
 financialFilter?.addEventListener("change", renderizarContas);
 
 financialList?.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-account-id]");
+  const deleteButton = event.target.closest("[data-delete-account]");
 
-  if (!button) return;
+  if (deleteButton) {
+    excluirConta(
+      deleteButton.dataset.deleteAccount,
+      deleteButton
+    );
+    return;
+  }
 
-  abrirDetalhesConta(button.dataset.accountId);
+  const detailsButton = event.target.closest("[data-account-id]");
+
+  if (detailsButton) {
+    abrirDetalhesConta(detailsButton.dataset.accountId);
+  }
 });
 
 installmentsList?.addEventListener("click", (event) => {

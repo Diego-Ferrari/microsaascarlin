@@ -39,6 +39,7 @@ let services = [];
 let clients = [];
 let quotes = [];
 let editingQuoteId = null;
+let financialAccounts = [];
 
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -114,7 +115,8 @@ async function loadData() {
       { data: clientsData, error: clientsError },
       { data: servicesData, error: servicesError },
       { data: quotesData, error: quotesError },
-      { data: itemsData, error: itemsError }
+      { data: itemsData, error: itemsError },
+      { data: accountsData, error: accountsError }
     ] = await Promise.all([
       supabaseClient
         .from("clientes")
@@ -141,13 +143,22 @@ async function loadData() {
         .select(
           "id, orcamento_id, servico_id, descricao, quantidade, preco_unitario"
         )
-        .eq("usuario_id", user.id)
+        .eq("usuario_id", user.id),
+
+        supabaseClient
+          .from("contas_receber")
+          .select("id, orcamento_id")
+          .eq("usuario_id", user.id)
+        
     ]);
 
     if (clientsError) throw clientsError;
     if (servicesError) throw servicesError;
     if (quotesError) throw quotesError;
     if (itemsError) throw itemsError;
+    if (accountsError) throw accountsError;
+
+    financialAccounts = accountsData ?? [];
 
     clients = (clientsData ?? []).map((client) => ({
       id: client.id,
@@ -236,8 +247,13 @@ function renderQuotes() {
   $("#quote-list").replaceChildren();
 
   filtered.forEach((quote) => {
-    const client = getClient(quote.clientId);
-    const row = document.createElement("tr");
+  const client = getClient(quote.clientId);
+
+  const financialAccount = financialAccounts.find(
+    (account) => account.orcamento_id === quote.id
+  );
+
+  const row = document.createElement("tr");
 
     const values = [
       quote.number,
