@@ -329,9 +329,26 @@ function renderQuotes() {
       remove.textContent = "Excluir";
       remove.addEventListener("click", () => deleteQuote(quote));
 
-      actions.append(edit,pdf, whatsapp, remove);
-          actionsCell.append(actions);
-          row.append(actionsCell);
+      // Ação financeira
+    const financial = document.createElement("button");
+    financial.type = "button";
+    financial.className = "small-action";
+
+    if (financialAccount) {
+      financial.textContent = "Ver financeiro";
+      financial.addEventListener("click", () => {
+        window.location.href = "financeiro.html";
+      });
+    } else {
+      financial.textContent = "Gerar conta a receber";
+      financial.addEventListener("click", () => {
+        gerarContaReceber(quote);
+      });
+    }
+
+    actions.append(edit, pdf, whatsapp, financial, remove);
+    actionsCell.append(actions);
+    row.append(actionsCell);
 
     $("#quote-list").append(row);
   });
