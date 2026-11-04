@@ -588,16 +588,16 @@ const abrirModalRecebimento = (parcelaId) => {
   receiptForm.reset();
 
   receiptInstallment.innerHTML = `
-    <option value="${escapeHTML(parcela.parcela_id)}">
-      ${
-        parcela.eh_entrada
-          ? "Entrada"
-          : `Parcela ${parcela.numero_parcela}`
-      } — Saldo: ${money(parcela.saldo)}
-    </option>
-  `;
+  <option value="${escapeHTML(parcela.parcela_id)}">
+    ${
+      parcela.eh_entrada
+        ? "Entrada"
+        : `Parcela ${parcela.numero_parcela}`
+    } — Saldo: ${money(parcela.saldo)}
+  </option>
+`;
 
-  receiptInstallment.value = parcela.parcela_id;
+receiptInstallment.value = parcela.parcela_id;
 
   receiptAmount.value = Number(parcela.saldo).toFixed(2);
   receiptDate.value = todayISO();
