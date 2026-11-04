@@ -586,3 +586,61 @@
   }
 }
 
+/* Modal financeiro */
+.receivable-modal {
+  max-width: 650px;
+}
+
+#receivable-installments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.receivable-installment {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+  padding: 14px;
+  background: #0b1425;
+  border: 1px solid #26344b;
+  border-radius: 10px;
+}
+
+.receivable-installment .form-field {
+  min-width: 0;
+}
+
+.receivable-installment-number {
+  color: #ffc400;
+  font-weight: 700;
+  padding-bottom: 12px;
+}
+
+#receivable-entry-received {
+  width: auto;
+  margin-right: 7px;
+}
+
+@media (max-width: 520px) {
+  .receivable-installment {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .receivable-installment-number {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
+  }
+}
+
+#receivable-entry-fields {
+  margin-top: 12px;
+}
+
+#receivable-entry-fields[hidden],
+#entry-method-field[hidden] {
+  display: none;
+}
+

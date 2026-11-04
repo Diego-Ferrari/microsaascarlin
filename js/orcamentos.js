@@ -21,6 +21,25 @@ const addDays = (date, days) => {
   return dateISO(result);
 };
 
+const addMonths = (date, months) => {
+  const result = new Date(date);
+  const day = result.getDate();
+
+  result.setDate(1);
+  result.setMonth(result.getMonth() + months);
+
+  const lastDay = new Date(
+    result.getFullYear(),
+    result.getMonth() + 1,
+    0
+  ).getDate();
+
+  result.setDate(Math.min(day, lastDay));
+
+  return dateISO(result);
+};
+
+
 const formatDate = (value) =>
   value
     ? new Date(`${value}T12:00:00`).toLocaleDateString("pt-BR")
@@ -40,6 +59,7 @@ let clients = [];
 let quotes = [];
 let editingQuoteId = null;
 let financialAccounts = [];
+let selectedReceivableQuote = null;
 
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -228,6 +248,231 @@ function renderStats() {
 
   $("#open-value").textContent = money(openValue);
 }
+
+
+function renderReceivableInstallments() {
+  if (!selectedReceivableQuote) return;
+
+  const totalCentavos = Math.round(
+    getTotal(selectedReceivableQuote) * 100
+  );
+
+  const quantidade = Number($("#receivable-installments").value);
+  const incluirEntrada = $("#receivable-include-entry").checked;
+
+  const entradaCentavos = incluirEntrada
+    ? Math.round(Number($("#receivable-entry-amount").value || 0) * 100)
+    : 0;
+
+  const lista = $("#receivable-installments-list");
+  lista.innerHTML = "";
+
+  if (incluirEntrada && (entradaCentavos <= 0 || entradaCentavos > totalCentavos)) {
+    return;
+  }
+
+  const quantidadeRestante = quantidade - (incluirEntrada ? 1 : 0);
+
+  const restanteCentavos = totalCentavos - entradaCentavos;
+
+  if (quantidadeRestante > 0 && restanteCentavos < quantidadeRestante) {
+    return;
+  }
+
+  const valorBase = quantidadeRestante > 0
+    ? Math.floor(restanteCentavos / quantidadeRestante)
+    : 0;
+
+  const sobra = quantidadeRestante > 0
+    ? restanteCentavos % quantidadeRestante
+    : 0;
+
+  for (let i = 0; i < quantidade; i++) {
+    const ehEntrada = incluirEntrada && i === 0;
+
+    let valorCentavos;
+
+    if (ehEntrada) {
+      valorCentavos = entradaCentavos;
+    } else {
+      const indiceRestante = i - (incluirEntrada ? 1 : 0);
+      valorCentavos = valorBase + (indiceRestante < sobra ? 1 : 0);
+    }
+
+    const vencimento = ehEntrada
+        ? dateISO(today)
+        : addMonths(today, i + 1 - (incluirEntrada ? 1 : 0));
+
+
+    const item = document.createElement("div");
+    item.className = "receivable-installment";
+
+    item.innerHTML = `
+      <div class="receivable-installment-number">
+        ${ehEntrada ? "Entrada" : `Parcela ${i + 1}`}
+      </div>
+
+      <label class="form-field">
+        Valor (R$)
+        <input
+          type="number"
+          class="receivable-installment-amount"
+          min="0.01"
+          step="0.01"
+          value="${(valorCentavos / 100).toFixed(2)}"
+          required
+        >
+      </label>
+
+      <label class="form-field">
+        Vencimento
+        <input
+          type="date"
+          class="receivable-installment-date"
+          value="${vencimento}"
+          required
+        >
+      </label>
+    `;
+
+    lista.appendChild(item);
+  }
+}
+
+
+function validarReceivableInstallments() {
+  const erro = $("#receivable-error");
+  erro.hidden = true;
+  erro.textContent = "";
+
+  const incluirEntrada = $("#receivable-include-entry").checked;
+  const totalCentavos = Math.round(
+    getTotal(selectedReceivableQuote) * 100
+  );
+
+  const valorEntrada = Math.round(
+    Number($("#receivable-entry-amount").value || 0) * 100
+  );
+
+  const quantidadeParcelas = Number($("#receivable-installments").value);
+
+if (
+  incluirEntrada &&
+  (
+    valorEntrada <= 0 ||
+    valorEntrada > totalCentavos ||
+    (valorEntrada === totalCentavos && quantidadeParcelas > 1)
+  )
+) {
+
+    erro.textContent = "Informe uma entrada maior que zero e menor que o total do orçamento.";
+    erro.hidden = false;
+    return false;
+  }
+
+  if (
+    incluirEntrada &&
+    $("#receivable-entry-received").checked &&
+    !$("#receivable-entry-method").value
+  ) {
+    erro.textContent = "Selecione o meio de pagamento da entrada.";
+    erro.hidden = false;
+    return false;
+  }
+
+  const valores = [
+    ...document.querySelectorAll(".receivable-installment-amount")
+  ];
+
+  const datas = [
+    ...document.querySelectorAll(".receivable-installment-date")
+  ];
+
+  if (valores.length !== quantidadeParcelas || valores.length !== datas.length) {
+    erro.textContent = "Não foi possível montar as parcelas. Confira a entrada e a quantidade.";
+    erro.hidden = false;
+    return false;
+  }
+
+  let somaCentavos = 0;
+
+  for (let i = 0; i < valores.length; i++) {
+    const valor = Number(valores[i].value);
+    const data = datas[i].value;
+
+    if (!Number.isFinite(valor) || valor <= 0 || !data) {
+      erro.textContent = `Confira o valor e o vencimento da parcela ${i + 1}.`;
+      erro.hidden = false;
+      return false;
+    }
+
+    somaCentavos += Math.round(valor * 100);
+  }
+
+  if (somaCentavos !== totalCentavos) {
+    erro.textContent = "A soma das parcelas precisa ser exatamente igual ao total do orçamento.";
+    erro.hidden = false;
+    return false;
+  }
+
+  return true;
+}
+
+
+function coletarReceivableInstallments() {
+  const incluirEntrada = $("#receivable-include-entry").checked;
+
+  const valores = [
+    ...document.querySelectorAll(".receivable-installment-amount")
+  ];
+
+  const datas = [
+    ...document.querySelectorAll(".receivable-installment-date")
+  ];
+
+  return valores.map((input, index) => ({
+    numero_parcela: index + 1,
+    valor: Number(input.value),
+    vencimento_em: datas[index].value,
+    eh_entrada: incluirEntrada && index === 0
+  }));
+}
+
+
+
+
+function gerarContaReceber(quote) {
+  selectedReceivableQuote = quote;
+
+  // Limpa os campos da entrada
+  $("#receivable-include-entry").checked = false;
+  $("#receivable-entry-amount").value = "";
+  $("#receivable-entry-received").checked = false;
+
+  $("#receivable-entry-fields").hidden = true;
+  $("#entry-method-field").hidden = true;
+
+  // Valores iniciais
+  $("#receivable-method").value = "pix";
+  $("#receivable-installments").value = "1";
+  $("#receivable-include-entry").checked = false;
+  $("#receivable-entry-received").checked = false;
+  $("#receivable-entry-amount").value = "";
+  // $("#receivable-entry-method").value = "pix";
+
+  $("#receivable-entry-method").value = "pix";
+
+  // Limpa mensagens e parcelas anteriores
+  $("#receivable-error").hidden = true;
+  $("#receivable-error").textContent = "";
+  $("#receivable-installments-list").innerHTML = "";
+
+  // Abre o modal
+  renderReceivableInstallments();
+  $("#receivable-modal").hidden = false;
+}
+
+
 
 function renderQuotes() {
   const query = $("#quote-search").value.trim().toLowerCase();
@@ -1239,5 +1484,109 @@ document.addEventListener("keydown", (event) => {
     closeModal();
   }
 });
+
+// Controle dos campos da entrada
+$("#receivable-include-entry").addEventListener("change", (event) => {
+  const incluirEntrada = event.target.checked;
+
+  $("#receivable-entry-fields").hidden = !incluirEntrada;
+
+  if (!incluirEntrada) {
+    $("#receivable-entry-received").checked = false;
+    $("#entry-method-field").hidden = true;
+  }
+});
+
+$("#receivable-entry-received").addEventListener("change", (event) => {
+  $("#entry-method-field").hidden = !event.target.checked;
+  renderReceivableInstallmentes()
+});
+
+
+// Atualiza as parcelas quando a quantidade mudar
+$("#receivable-installments").addEventListener("change", () => {
+  renderReceivableInstallments();
+});
+
+// Atualiza as parcelas quando o valor da entrada mudar
+$("#receivable-entry-amount").addEventListener("input", () => {
+  renderReceivableInstallments();
+});
+
+// Fechar modal de conta a receber
+function fecharModalReceivable() {
+  $("#receivable-modal").hidden = true;
+  selectedReceivableQuote = null;
+}
+
+$("#close-receivable-modal").addEventListener("click", fecharModalReceivable);
+
+$("#cancel-receivable-modal").addEventListener("click", fecharModalReceivable);
+
+$("#receivable-modal").addEventListener("click", (event) => {
+  if (event.target === $("#receivable-modal")) {
+    fecharModalReceivable();
+  }
+});
+
+
+$("#receivable-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!selectedReceivableQuote) return;
+
+  if (!validarReceivableInstallments()) return;
+
+  const incluirEntrada = $("#receivable-include-entry").checked;
+  const entradaRecebida = incluirEntrada &&
+    $("#receivable-entry-received").checked;
+
+  const parcelas = coletarReceivableInstallments();
+
+  const botao = $("#receivable-form").querySelector(
+    'button[type="submit"]'
+  );
+
+  botao.disabled = true;
+  botao.textContent = "Gerando conta...";
+
+  try {
+    const { error } = await supabaseClient.rpc(
+      "criar_conta_receber",
+      {
+        p_orcamento_id: selectedReceivableQuote.id,
+        p_meio_pagamento: $("#receivable-method").value,
+        p_parcelas: parcelas,
+        p_entrada_recebida: entradaRecebida,
+        p_meio_pagamento_entrada: entradaRecebida
+          ? $("#receivable-entry-method").value
+          : null
+      }
+    );
+
+    if (error) throw error;
+
+    fecharModalReceivable();
+
+    alert("Conta a receber criada com sucesso!");
+
+    await loadData();
+
+    
+  } catch (error) {
+    console.error("Erro ao gerar conta a receber:", error);
+
+    $("#receivable-error").textContent =
+      error.message || "Não foi possível gerar a conta a receber.";
+
+    $("#receivable-error").hidden = false;
+  } finally {
+    botao.disabled = false;
+    botao.textContent = "Gerar conta a receber";
+  }
+});
+
+
+
 
 loadData();

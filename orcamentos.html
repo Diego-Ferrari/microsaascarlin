@@ -286,6 +286,152 @@
         </div>
       </form>
     </section>
+  </div> 
+
+  
+  <!-- Modal de geração da conta a receber -->
+  <div class="modal-backdrop" id="receivable-modal" hidden>
+    <section
+      class="modal quote-modal receivable-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="receivable-modal-title"
+    >
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">GESTÃO FINANCEIRA</p>
+          <h2 id="receivable-modal-title">Gerar conta a receber</h2>
+        </div>
+
+        <button
+          class="icon-button close-button"
+          id="close-receivable-modal"
+          type="button"
+          aria-label="Fechar"
+        >×</button>
+      </div>
+
+      <form id="receivable-form">
+
+        <div class="form-grid">
+
+          <label class="form-field">
+            Meio de pagamento
+            <select id="receivable-method" required>
+              <option value="pix">Pix</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="credito">Cartão de crédito</option>
+              <option value="debito">Cartão de débito</option>
+              <option value="transferencia">Transferência</option>
+              <option value="outro">Outro</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            Quantidade de parcelas(incluindo a entrada)
+            <select id="receivable-installments" required>
+              <option value="1">1 parcela</option>
+              <option value="2">2 parcelas</option>
+              <option value="3">3 parcelas</option>
+              <option value="4">4 parcelas</option>
+              <option value="5">5 parcelas</option>
+              <option value="6">6 parcelas</option>
+              <option value="7">7 parcelas</option>
+              <option value="8">8 parcelas</option>
+              <option value="9">9 parcelas</option>
+              <option value="10">10 parcelas</option>
+              <option value="11">11 parcelas</option>
+              <option value="12">12 parcelas</option>
+            </select>
+          </label>
+
+        </div>
+
+        <div class="form-field">
+          <label>
+            <input type="checkbox" id="receivable-include-entry">
+            Incluir entrada?
+          </label>
+        </div>
+
+        <div id="receivable-entry-fields" hidden>
+
+          <div class="form-grid">
+
+            <label class="form-field">
+              Valor da entrada
+              <input
+                type="number"
+                id="receivable-entry-amount"
+                min="0.01"
+                step="0.01"
+                placeholder="Ex.: 200,00"
+              >
+            </label>
+
+            <div class="form-field">
+              <label>
+                <input type="checkbox" id="receivable-entry-received">
+                Já recebeu a entrada?
+              </label>
+            </div>
+
+          </div>
+
+          <label class="form-field" id="entry-method-field" hidden>
+            Meio de pagamento da entrada
+            <select id="receivable-entry-method">
+              <option value="pix">Pix</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="credito">Cartão de crédito</option>
+              <option value="debito">Cartão de débito</option>
+              <option value="transferencia">Transferência</option>
+              <option value="outro">Outro</option>
+            </select>
+          </label>
+
+        </div>
+
+
+        <!-- <label class="form-field" id="entry-method-field" hidden>
+          Meio de pagamento da entrada
+          <select id="receivable-entry-method">
+            <option value="pix">Pix</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="credito">Cartão de crédito</option>
+            <option value="debito">Cartão de débito</option>
+            <option value="transferencia">Transferência</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label> -->
+
+        <div class="items-heading">
+          <div>
+            <h3>Parcelas</h3>
+            <p>Confira os valores e vencimentos antes de gerar a conta.</p>
+          </div>
+        </div>
+
+        <div id="receivable-installments-list"></div>
+
+        <p class="form-error" id="receivable-error" role="alert" hidden></p>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="secondary-button"
+            id="cancel-receivable-modal"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="primary-button">
+            Gerar conta a receber
+          </button>
+        </div>
+
+      </form>
+    </section>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
