@@ -591,7 +591,7 @@ function renderQuotes() {
       });
     }
 
-    actions.append(edit, pdf, whatsapp, financial, remove);
+    actions.append(edit, pdf, financial, remove);
     actionsCell.append(actions);
     row.append(actionsCell);
 

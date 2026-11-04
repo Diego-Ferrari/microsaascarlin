@@ -168,6 +168,10 @@ button {
   margin-bottom: 5px;
 }
 
+.dashboard-topbar {
+  justify-content: space-between;
+}
+
 .eyebrow {
   margin: 0 0 9px;
 }
@@ -802,6 +806,13 @@ button {
     text-align: center;
   }
 
+  .dashboard-topbar {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    text-align: left;
+  }
+
   /* Centraliza a introdução dos clientes (título, descrição e botão) */
   .clients-intro {
     flex-direction: column;
@@ -951,14 +962,6 @@ button {
     padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
   }
 
-  .sidebar-header .logout-button {
-    position: fixed;
-    top: 10px;
-    right: 12px;
-    z-index: 20;
-    min-height: 40px;
-    padding: 8px 10px;
-  }
 }
 
 @media (max-width: 650px) {

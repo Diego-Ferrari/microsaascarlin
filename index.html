@@ -18,7 +18,6 @@
 <body>
   <div class="layout">
     <aside class="sidebar">
-  <!-- Container flex para alinhar logo à esquerda e botão de sair à direita -->
   <div class="sidebar-header">
     <a href="index.html" class="brand">
       <img src="./imagens/logominimalista.webp" alt="Carlin Elétrica" class="brand-logo">
@@ -27,11 +26,6 @@
         <small>Gestão de serviços</small>
       </span>
     </a>
-    <button id="logout-button" class="logout-button" type="button"
-      aria-label="Sair da conta" title="Sair da conta">
-      <span>↪</span>
-      Sair
-    </button>
   </div>
 
   <p class="menu-label">MENU PRINCIPAL</p>
@@ -70,13 +64,18 @@
 </aside>
 
     <main class="main-content">
-      <header class="topbar">
+      <header class="topbar dashboard-topbar">
         <div>
           <p class="eyebrow">PAINEL DE CONTROLE</p>
           <h1 id="page-title">Visão geral</h1>
         </div>
 
         <div class="topbar-actions">
+          <button id="logout-button" class="logout-button" type="button"
+            aria-label="Sair da conta" title="Sair da conta">
+            <span>↪</span>
+            Sair
+          </button>
         <!-- <div class="user-profile">
           <div class="avatar">C</div>
           <div>

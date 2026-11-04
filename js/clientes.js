@@ -498,7 +498,7 @@ function renderHistorico(cliente, atendimentos, itensPorExecucao) {
   );
 
   valorTotal.append(
-    criarElemento("span", "", "Total recebido"),
+    criarElemento("span", "", "Valor dos serviços"),
     criarElemento(
       "strong",
       "",
