@@ -48,6 +48,7 @@ let contas = [];
 let clientes = [];
 let parcelasAtuais = [];
 let recebimentosAtuais = [];
+let parcelasFinanceiro = [];
 let contaSelecionada = null;
 
 let parcelaSelecionada = null;
@@ -166,7 +167,11 @@ const verificarUsuario = async () => {
 
 const carregarFinanceiro = async () => {
   try {
-    const [contasResponse, clientesResponse] = await Promise.all([
+    const [
+      contasResponse,
+      clientesResponse,
+      parcelasResponse
+    ] = await Promise.all([
       supabaseClient
         .from("visao_contas_receber")
         .select("*")
@@ -174,7 +179,11 @@ const carregarFinanceiro = async () => {
 
       supabaseClient
         .from("clientes")
-        .select("id, nome")
+        .select("id, nome"),
+
+      supabaseClient
+        .from("visao_parcelas_receber")
+        .select("saldo, situacao")
     ]);
 
     if (contasResponse.error) {
@@ -185,8 +194,13 @@ const carregarFinanceiro = async () => {
       throw clientesResponse.error;
     }
 
+    if (parcelasResponse.error) {
+      throw parcelasResponse.error;
+    }
+
     contas = contasResponse.data || [];
     clientes = clientesResponse.data || [];
+    parcelasFinanceiro = parcelasResponse.data || [];
 
     renderizarIndicadores();
     renderizarContas();
@@ -196,7 +210,6 @@ const carregarFinanceiro = async () => {
     showToast("Não foi possível carregar o financeiro.", "error");
   }
 };
-
 
 // =====================================================
 // INDICADORES
@@ -218,16 +231,16 @@ const renderizarIndicadores = () => {
     0
   );
 
-  const totalOverdue = contas.reduce(
-    (total, conta) => {
-      return total + (
-        conta.possui_parcela_vencida
-          ? Number(conta.saldo || 0)
-          : 0
-      );
-    },
-    0
-  );
+  const totalOverdue = parcelasFinanceiro.reduce(
+  (total, parcela) => {
+    return total + (
+      parcela.situacao === "vencida"
+        ? Number(parcela.saldo || 0)
+        : 0
+    );
+  },
+  0
+);
 
   $("#total-receivable").textContent = money(totalReceivable);
   $("#total-received").textContent = money(totalReceived);
