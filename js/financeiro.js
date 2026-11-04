@@ -345,6 +345,7 @@ const abrirDetalhesConta = async (contaId) => {
     renderizarParcelas();
     renderizarHistorico();
 
+    financialModal.hidden = false;
     financialModal.classList.add("active");
 
   } catch (error) {
@@ -601,6 +602,7 @@ const abrirModalRecebimento = (parcelaId) => {
   receiptAmount.value = Number(parcela.saldo).toFixed(2);
   receiptDate.value = todayISO();
 
+  receiptModal.hidden = false;
   receiptModal.classList.add("active");
 };
 
@@ -611,13 +613,14 @@ const abrirModalRecebimento = (parcelaId) => {
 
 const fecharModalFinanceiro = () => {
   financialModal.classList.remove("active");
+  financialModal.hidden = true;
 };
 
 const fecharModalRecebimento = () => {
   receiptModal.classList.remove("active");
+  receiptModal.hidden = true;
   clearError();
 };
-
 
 // =====================================================
 // NORMALIZAR MEIO DE PAGAMENTO
