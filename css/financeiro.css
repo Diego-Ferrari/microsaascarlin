@@ -1,0 +1,594 @@
+
+/* =========================================
+   FINANCEIRO — ESTRUTURA GERAL
+========================================= */
+
+.financial-page {
+  width: 100%;
+}
+
+.main-content .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 26px 0;
+}
+
+.main-content .stat-card {
+  min-width: 0;
+  padding: 20px;
+  background: #111a2c;
+  border: 1px solid #233049;
+  border-radius: 14px;
+}
+
+.main-content .stat-label {
+  display: block;
+  color: #8e9bb2;
+  font-size: 0.82rem;
+}
+
+.main-content .stat-card strong {
+  display: block;
+  margin: 12px 0 8px;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  letter-spacing: -0.5px;
+}
+
+.main-content .stat-caption {
+  display: block;
+  color: #71809a;
+  font-size: 0.74rem;
+}
+
+/* =========================================
+   CONTAS A RECEBER
+========================================= */
+
+.main-content .content-card {
+  min-width: 0;
+  padding: 22px;
+  background: #111a2c;
+  border: 1px solid #233049;
+  border-radius: 14px;
+}
+
+.main-content .section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 17px;
+}
+
+.main-content .section-heading h2,
+.main-content .section-heading h3 {
+  margin: 0 0 7px;
+  color: #e8edf7;
+  font-size: 1.05rem;
+}
+
+.main-content .section-heading p {
+  margin: 0;
+  color: #8e9bb2;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Pesquisa e filtros */
+
+.main-content .toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.main-content .search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  max-width: 480px;
+  padding: 0 12px;
+  background: #0b1323;
+  border: 1px solid #2a3850;
+  border-radius: 9px;
+}
+
+.main-content .search-box span {
+  color: #8e9bb2;
+  font-size: 22px;
+}
+
+.main-content .search-box input {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 10px 0;
+  color: #edf2fa;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 13px;
+}
+
+.main-content .search-box:focus-within {
+  border-color: #7896c2;
+}
+
+.main-content .toolbar select {
+  width: 100%;
+  max-width: 230px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #edf2fa;
+  background: #0b1323;
+  border: 1px solid #2a3850;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+}
+
+/* =========================================
+   TABELAS FINANCEIRAS
+========================================= */
+
+.main-content .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.main-content .data-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.main-content .data-table th {
+  padding: 14px 12px;
+  color: #8e9bb2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.main-content .data-table td {
+  padding: 15px 12px;
+  color: #dce5f2;
+  border-top: 1px solid #233049;
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
+.main-content .data-table tbody tr:hover {
+  background: #ffffff05;
+}
+
+.financial-number {
+  color: #ffc928;
+  font-weight: 800;
+}
+
+.financial-value {
+  font-weight: 700;
+}
+
+.financial-received {
+  color: #54ddb0 !important;
+}
+
+.financial-open {
+  color: #ffd45b !important;
+}
+
+.financial-overdue {
+  color: #ff9aa5 !important;
+}
+
+/* =========================================
+   SITUAÇÕES FINANCEIRAS
+========================================= */
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-em_aberto {
+  color: #ffd66b;
+  background: #493a1b;
+}
+
+.status-parcial {
+  color: #8fc7ff;
+  background: #193252;
+}
+
+.status-recebido {
+  color: #7ce2b6;
+  background: #153e32;
+}
+
+.status-vencido {
+  color: #ff9aa5;
+  background: #48282d;
+}
+
+/* Ações nas tabelas */
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.small-action {
+  padding: 7px 9px;
+  color: #e4ebf6;
+  background: #202c41;
+  border: 1px solid #30405b;
+  border-radius: 7px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.small-action:hover {
+  border-color: #ffc928;
+  background: #293950;
+}
+
+/* =========================================
+   ESTADO VAZIO
+========================================= */
+
+.main-content .empty-state {
+  padding: 44px 15px;
+  text-align: center;
+}
+
+.main-content .empty-icon {
+  margin-bottom: 12px;
+  color: #ffc928;
+  font-size: 2rem;
+}
+
+.main-content .empty-state h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.main-content .empty-state p {
+  max-width: 420px;
+  margin: 10px auto 20px;
+  color: #8e9bb2;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* =========================================
+   MODAL DE DETALHES FINANCEIROS
+========================================= */
+
+.financial-modal,
+.receipt-modal {
+  width: 100%;
+  background: #111a2c;
+  border: 1px solid #2a3850;
+  border-radius: 16px;
+  padding: 25px;
+}
+
+.financial-modal {
+  width: min(1050px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.receipt-modal {
+  width: min(650px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.financial-modal .modal-header,
+.receipt-modal .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #26344b;
+}
+
+.financial-modal .modal-header h2,
+.receipt-modal .modal-header h2 {
+  margin: 0;
+  color: #e8edf7;
+  font-size: 1.3rem;
+}
+
+/* =========================================
+   INFORMAÇÕES DA CONTA
+========================================= */
+
+#financial-account-details {
+  margin-bottom: 25px;
+}
+
+.financial-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.financial-detail-card {
+  min-width: 0;
+  padding: 15px;
+  background: #0b1323;
+  border: 1px solid #26344b;
+  border-radius: 10px;
+}
+
+.financial-detail-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #8e9bb2;
+  font-size: 0.75rem;
+}
+
+.financial-detail-value {
+  display: block;
+  color: #e8edf7;
+  font-size: 1.05rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.financial-account-summary {
+  margin-top: 14px;
+  padding: 16px;
+  background: #182a40;
+  border: 1px solid #30445f;
+  border-radius: 10px;
+}
+
+/* =========================================
+   SEÇÕES DO MODAL
+========================================= */
+
+.financial-section {
+  margin-top: 28px;
+}
+
+.financial-section .section-heading {
+  margin-bottom: 15px;
+}
+
+.financial-section .data-table {
+  min-width: 760px;
+}
+
+/* =========================================
+   FORMULÁRIO DE RECEBIMENTO
+========================================= */
+
+.receipt-modal .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.receipt-modal .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: #cbd5e5;
+  font-size: 0.82rem;
+}
+
+.receipt-modal .form-field input,
+.receipt-modal .form-field select,
+.receipt-modal .form-field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  color: #edf2fa;
+  background: #0b1323;
+  border: 1px solid #2a3850;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.receipt-modal .form-field input:focus,
+.receipt-modal .form-field select:focus,
+.receipt-modal .form-field textarea:focus {
+  outline: none;
+  border-color: #7896c2;
+}
+
+.receipt-modal .form-field input[readonly] {
+  color: #aab6c9;
+  background: #182338;
+}
+
+.receipt-modal .form-field textarea {
+  resize: vertical;
+}
+
+.receipt-modal .form-error {
+  margin: 12px 0;
+  padding: 11px;
+  color: #ffb3bb;
+  background: #48282d;
+  border-radius: 8px;
+}
+
+/* Botões dos modais */
+
+.financial-modal .modal-actions,
+.receipt-modal .modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #26344b;
+}
+
+/* =========================================
+   RESPONSIVIDADE — TABLETS
+========================================= */
+
+@media (max-width: 1100px) {
+  .main-content .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================
+   RESPONSIVIDADE — CELULARES
+========================================= */
+
+@media (max-width: 700px) {
+  .main-content .content-card {
+    padding: 15px;
+  }
+
+  .main-content .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .main-content .search-box {
+    max-width: none;
+  }
+
+  .main-content .toolbar select {
+    max-width: none;
+  }
+
+  .main-content .stat-card {
+    padding: 14px;
+    text-align: center;
+  }
+
+  .main-content .stat-card strong {
+    font-size: 1.2rem;
+  }
+
+  .main-content .stat-label {
+    font-size: 0.85rem;
+  }
+
+  .main-content .stat-caption {
+    display: none;
+  }
+
+  .financial-modal,
+  .receipt-modal {
+    padding: 17px;
+  }
+
+  .financial-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .receipt-modal .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .receipt-modal .full-width {
+    grid-column: auto;
+  }
+
+  .financial-modal .modal-actions,
+  .receipt-modal .modal-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .financial-modal .modal-actions button,
+  .receipt-modal .modal-actions button {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   RESPONSIVIDADE — TELAS ESTREITAS
+========================================= */
+
+@media (max-width: 420px) {
+  .main-content .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .main-content .stat-card {
+    padding: 12px 8px;
+  }
+
+  .main-content .stat-card strong {
+    font-size: 1.05rem;
+  }
+
+  .main-content .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .financial-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .financial-modal,
+  .receipt-modal {
+    padding: 14px;
+  }
+
+  .financial-modal .modal-header h2,
+  .receipt-modal .modal-header h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* =========================================
+   ACESSIBILIDADE E ESTADOS
+========================================= */
+
+.financial-modal,
+.receipt-modal {
+  scrollbar-width: thin;
+  scrollbar-color: #40516c #111a2c;
+}
+
+.financial-modal::-webkit-scrollbar,
+.receipt-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.financial-modal::-webkit-scrollbar-thumb,
+.receipt-modal::-webkit-scrollbar-thumb {
+  background: #40516c;
+  border-radius: 10px;
+}
+
+.financial-modal button:disabled,
+.receipt-modal button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

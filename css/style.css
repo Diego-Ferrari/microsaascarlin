@@ -898,7 +898,7 @@ button {
     position: fixed;
     inset: auto 0 0;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     align-items: stretch;
     width: 100%;
     height: calc(76px + env(safe-area-inset-bottom, 0px));
@@ -1000,5 +1000,10 @@ button {
   .main-content .secondary-button,
   .sidebar-header .logout-button {
     font-size: 14px;
+  }
+}
+@media (max-width: 420px) {
+  .menu-link > span:not(.menu-icon) {
+    display: none;
   }
 }

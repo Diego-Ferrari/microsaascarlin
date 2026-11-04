@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1120">
+
+  <title>Financeiro | Carlin Elétrica</title>
+
+  <!-- Biblioteca externa -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/orcamentos.css">
+  <link rel="stylesheet" href="./css/financeiro.css">
+
+  <!-- Configurações e autenticação -->
+  <script src="./js/supabase.js"></script>
+  <script src="./js/auth.js"></script>
+
+  <!-- Lógica da página -->
+  <script src="./js/financeiro.js" defer></script>
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a href="./index.html" class="brand">
+        <img src="./imagens/logominimalista.webp"
+             alt="Carlin Elétrica"
+             class="brand-logo">
+        <span>
+          <strong>Carlin Elétrica</strong>
+          <small>Gestão de serviços</small>
+        </span>
+      </a>
+
+      <p class="menu-label">MENU PRINCIPAL</p>
+
+      <nav class="menu">
+        <a href="./index.html" class="menu-link">
+          <span class="menu-icon" aria-hidden="true">▦</span>
+          <span>Visão geral</span>
+        </a>
+
+        <a href="./clientes.html" class="menu-link">
+          <span class="menu-icon" aria-hidden="true">♙</span>
+          <span>Clientes</span>
+        </a>
+
+        <a href="./servicos.html" class="menu-link">
+          <span class="menu-icon" aria-hidden="true">⚡</span>
+          <span>Serviços</span>
+        </a>
+
+        <a href="./orcamentos.html" class="menu-link">
+          <span class="menu-icon" aria-hidden="true">▤</span>
+          <span>Orçamentos</span>
+        </a>
+
+        <a href="./execucoes.html" class="menu-link">
+          <span class="menu-icon" aria-hidden="true">✓</span>
+          <span>Execuções</span>
+        </a>
+
+        <a href="./financeiro.html"
+           class="menu-link active"
+           aria-current="page">
+          <span class="menu-icon" aria-hidden="true">R$</span>
+          <span>Financeiro</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        Sistema de gestão
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">CONTROLE FINANCEIRO</p>
+          <h1>Financeiro</h1>
+        </div>
+      </header>
+
+      <!-- Introdução -->
+      <section class="clients-intro">
+        <div>
+          <p>Acompanhe suas contas a receber, parcelas e recebimentos.</p>
+        </div>
+      </section>
+
+      <!-- Indicadores financeiros -->
+      <section class="stats-grid">
+
+        <article class="stat-card">
+          <span class="stat-label">Total a receber</span>
+          <strong id="total-receivable">R$ 0,00</strong>
+          <span class="stat-caption">Valor total das contas</span>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-label">Total recebido</span>
+          <strong id="total-received">R$ 0,00</strong>
+          <span class="stat-caption">Pagamentos registrados</span>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-label">Saldo em aberto</span>
+          <strong id="total-open">R$ 0,00</strong>
+          <span class="stat-caption">Valores ainda não recebidos</span>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-label">Valores vencidos</span>
+          <strong id="total-overdue">R$ 0,00</strong>
+          <span class="stat-caption">Parcelas em atraso</span>
+        </article>
+
+      </section>
+
+      <!-- Contas a receber -->
+      <section class="content-card">
+
+        <div class="section-heading">
+          <div>
+            <h2>Contas a receber</h2>
+            <p>Consulte os valores, pagamentos e saldos dos clientes.</p>
+          </div>
+        </div>
+
+        <!-- Pesquisa e filtros -->
+        <div class="toolbar">
+
+          <div class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="financial-search"
+              type="search"
+              placeholder="Buscar por cliente ou orçamento..."
+            >
+          </div>
+
+          <select id="financial-filter" aria-label="Filtrar contas">
+            <option value="todas">Todas as contas</option>
+            <option value="em_aberto">Em aberto</option>
+            <option value="parcial">Parcialmente recebidas</option>
+            <option value="recebido">Totalmente recebidas</option>
+            <option value="vencido">Com parcelas vencidas</option>
+          </select>
+
+        </div>
+
+        <!-- Tabela -->
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Orçamento</th>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Valor total</th>
+                <th>Recebido</th>
+                <th>Saldo</th>
+                <th>Situação</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="financial-list">
+              <!-- Preenchido pelo JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Estado vazio -->
+        <div class="empty-state" id="financial-empty" hidden>
+          <div class="empty-icon">R$</div>
+          <h3>Nenhuma conta encontrada</h3>
+          <p>
+            As contas a receber serão exibidas aqui quando forem
+            criadas a partir dos orçamentos.
+          </p>
+        </div>
+
+      </section>
+
+      <footer class="footer">
+        Carlin Elétrica <span>•</span> Sistema de gestão
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Modal de detalhes financeiros -->
+  <div class="modal-backdrop" id="financial-modal" hidden>
+
+    <section
+      class="modal financial-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="financial-modal-title"
+    >
+
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">GESTÃO DE RECEBIMENTOS</p>
+          <h2 id="financial-modal-title">Detalhes da conta</h2>
+        </div>
+
+        <button
+          class="icon-button close-button"
+          id="close-financial-modal"
+          type="button"
+          aria-label="Fechar"
+        >×</button>
+      </div>
+
+      <!-- Informações da conta -->
+      <div id="financial-account-details">
+        <!-- Preenchido pelo JavaScript -->
+      </div>
+
+      <!-- Parcelas -->
+      <div class="financial-section">
+        <div class="section-heading">
+          <div>
+            <h3>Parcelas</h3>
+            <p>Acompanhe vencimentos e saldos.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Parcela</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Recebido</th>
+                <th>Saldo</th>
+                <th>Situação</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+
+            <tbody id="installments-list">
+              <!-- Preenchido pelo JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Histórico de recebimentos -->
+      <div class="financial-section">
+        <div class="section-heading">
+          <div>
+            <h3>Histórico de recebimentos</h3>
+            <p>Pagamentos registrados nesta conta.</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Parcela</th>
+                <th>Valor recebido</th>
+                <th>Forma de pagamento</th>
+                <th>Observações</th>
+              </tr>
+            </thead>
+
+            <tbody id="receipts-list">
+              <!-- Preenchido pelo JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- Modal para registrar recebimento -->
+  <div class="modal-backdrop" id="receipt-modal" hidden>
+
+    <section
+      class="modal receipt-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="receipt-modal-title"
+    >
+
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">CONTROLE FINANCEIRO</p>
+          <h2 id="receipt-modal-title">Registrar recebimento</h2>
+        </div>
+
+        <button
+          class="icon-button close-button"
+          id="close-receipt-modal"
+          type="button"
+          aria-label="Fechar"
+        >×</button>
+      </div>
+
+      <form id="receipt-form">
+
+        <div class="form-grid">
+
+          <label class="form-field full-width">
+            Parcela
+            <input
+              type="text"
+              id="receipt-installment"
+              readonly
+            >
+          </label>
+
+          <label class="form-field">
+            Valor recebido *
+            <input
+              type="number"
+              id="receipt-amount"
+              min="0.01"
+              step="0.01"
+              required
+              placeholder="0,00"
+            >
+          </label>
+
+          <label class="form-field">
+            Data do recebimento *
+            <input
+              type="date"
+              id="receipt-date"
+              required
+            >
+          </label>
+
+          <label class="form-field full-width">
+            Forma de pagamento *
+            <select id="receipt-method" required>
+              <option value="pix">Pix</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="credito">Cartão de crédito</option>
+              <option value="debito">Cartão de débito</option>
+              <option value="transferencia">Transferência</option>
+              <option value="outro">Outro</option>
+            </select>
+          </label>
+
+          <label class="form-field full-width">
+            Observações
+            <textarea
+              id="receipt-notes"
+              rows="2"
+              placeholder="Informações adicionais..."
+            ></textarea>
+          </label>
+
+        </div>
+
+        <p
+          class="form-error"
+          id="receipt-error"
+          role="alert"
+          hidden
+        ></p>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="secondary-button"
+            id="cancel-receipt"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="primary-button">
+            Registrar recebimento
+          </button>
+        </div>
+
+      </form>
+    </section>
+  </div>
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+    hidden
+  ></div>
+
+</body>
+</html>
