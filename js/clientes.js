@@ -859,7 +859,7 @@ botaoHistorico.addEventListener("click", () => {
 acoes.append(
   botaoEditar,
   botaoHistorico,
-  botaoArquivar,
+  // botaoArquivar,
   botaoExcluir
 );
     acoesCelula.append(acoes);
