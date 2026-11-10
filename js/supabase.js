@@ -1,6 +1,6 @@
 
-const SUPABASE_URL = "https://jgldohjeervovrrkgahn.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_JXoMIj05Kj6v3H-7bkjc-g_oILhXtjk";
+const SUPABASE_URL = "https://iazukyfnfrigxjcjkqix.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Mkyj9_VQk5-Wlt9zt_pGjQ_9da34zGh";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
